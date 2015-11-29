@@ -33,6 +33,8 @@ public class Pelaaja implements InputProcessor{
 			jump = true;
 		}
 		if (up && jump){
+			hv.y = -4*pelaaja.getLinearVelocity().y + 400;
+			System.out.println("hv " + hv.y);
 			pelaaja.applyLinearImpulse(hv,pelaaja.getPosition(), true);
 			jump = false;
 		}
@@ -85,7 +87,6 @@ public class Pelaaja implements InputProcessor{
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

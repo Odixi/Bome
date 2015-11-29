@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -24,6 +27,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class LaatikkojenSota extends ApplicationAdapter {
 
 	OrthographicCamera camera;
+	OrthographicCamera camera2;
 	float width, height;
 	FPSLogger logger;
 	
@@ -37,6 +41,9 @@ public class LaatikkojenSota extends ApplicationAdapter {
 	
 	RayHandler rayHandler;
 	
+	OrthogonalTiledMapRenderer mapRenderer;
+	TiledMap map;
+	
 	
 	@Override
 	public void create () {
@@ -49,8 +56,11 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		height = Gdx.graphics.getHeight() / 6;
 		
 		camera = new OrthographicCamera(width, height);
+		camera2 = new OrthographicCamera(width*6,height*6);
 		camera.position.set(width * 0.5f, height * 0.5f, 0);
+		camera2.position.set(width * 0.5f*6, height * 0.5f*6, 0);
 		camera.update();
+		camera2.update();
 		
 		world = new World(new Vector2(0, -9.8f*10), false);
 		contactDetection = new ContactDetectioin();
@@ -60,14 +70,21 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		
 		logger = new FPSLogger();
 		
+		// Tile map jutut
+		
+		map = new TmxMapLoader().load("map1.tmx");
+		mapRenderer = new OrthogonalTiledMapRenderer(map);
+		
+		TileObjectUtil.parseTileObjectLayer(world, map.getLayers().get("collision").getObjects());
+		
 		// Valoilmiö
 		rayHandler = new RayHandler(world);
 		rayHandler.setCombinedMatrix(camera.combined);
 		rayHandler.setBlurNum(3);
 		rayHandler.setAmbientLight(0.2f);
-		//new DirectionalLight(rayHandler, 1000, Color.YELLOW, -60);
-        new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f+100, height/2f);
-        new PointLight(rayHandler, 800, Color.BLUE , width/1.2f, width/2f-100, height/2f);
+	//	new DirectionalLight(rayHandler, 1000, Color.YELLOW, -60);
+        new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f+50, height/2f);
+        new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f-50, height/2f);
 		
 		//YMPYRÄN MUODOSTUS
 		
@@ -151,6 +168,8 @@ public class LaatikkojenSota extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		world.dispose();
+		map.dispose();
+		mapRenderer.dispose();
 	}
 
 	@Override
@@ -158,14 +177,17 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 255);
 		Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT); // GL10 -> GL30
 		
-		renderer.render(world, camera.combined);
+		mapRenderer.setView(camera2);
+		mapRenderer.render();
+		
+		//renderer.render(world, camera.combined);
 		
 		rayHandler.updateAndRender();
 		
 		world.step(1/60f, 6, 2);
 		pelaaja.update();
 		
-		//logger.log();
+		logger.log();
 		
 	}
 	
