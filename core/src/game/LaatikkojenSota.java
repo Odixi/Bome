@@ -77,7 +77,7 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		
 		TileObjectUtil.parseTileObjectLayer(world, map.getLayers().get("collision").getObjects());
 		
-		// Valoilmiö
+		// Valoilmiï¿½
 		rayHandler = new RayHandler(world);
 		rayHandler.setCombinedMatrix(camera.combined);
 		rayHandler.setBlurNum(3);
@@ -85,8 +85,9 @@ public class LaatikkojenSota extends ApplicationAdapter {
 	//	new DirectionalLight(rayHandler, 1000, Color.YELLOW, -60);
         new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f+50, height/2f);
         new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f-50, height/2f);
-		
-		//YMPYRÄN MUODOSTUS
+        PointLight tausta = new PointLight(rayHandler, 10, Color.DARK_GRAY , width/0.8f, width/2f, height/2f);
+		tausta.setXray(true);
+		//YMPYRï¿½N MUODOSTUS
 		
 			BodyDef Pdef = new BodyDef();
 			Pdef.type = BodyType.DynamicBody;
@@ -98,7 +99,7 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		
 			ympyraMuoto.setRadius(3f);
 		
-			// Lisää objektien ominaisuuksien määrittelyä
+			// Lisï¿½ï¿½ objektien ominaisuuksien mï¿½ï¿½rittelyï¿½
 			FixtureDef ympyraFixt = new FixtureDef();
 			ympyraFixt.shape = ympyraMuoto;
 			ympyraFixt.density = 0.4f;
@@ -107,7 +108,7 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		
 			ympyra.createFixture(ympyraFixt);
 		
-		// YMPYRÄN MUODOSTUS END
+		// YMPYRï¿½N MUODOSTUS END
 			
 		// LAATIKKO
 			
@@ -126,6 +127,7 @@ public class LaatikkojenSota extends ApplicationAdapter {
 			laatikkoFix.friction = 3.0f;
 			laatikkoFix.restitution = 0.4f;
 			laatikkoFix.filter.groupIndex = -2;
+			laatikkoFix.filter.maskBits = 0x0FEF;
 					
 			laatikko.createFixture(laatikkoFix);
 			
@@ -180,7 +182,7 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		mapRenderer.setView(camera2);
 		mapRenderer.render();
 		
-		//renderer.render(world, camera.combined);
+		renderer.render(world, camera.combined);
 		
 		rayHandler.updateAndRender();
 		

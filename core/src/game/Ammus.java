@@ -24,7 +24,7 @@ public class Ammus {
 		isAlive = true;
 		rDis = -1;
 		
-		//v.setLength(7); //TODO Ei collisionia pelaaja ja ammuksen kanssa ja lähtee pelaajasta
+		//v.setLength(7); //TODO Ei collisionia pelaaja ja ammuksen kanssa ja lï¿½htee pelaajasta
 		BodyDef adef = new BodyDef();
 		adef.type = BodyType.DynamicBody;
 		adef.position.set(new Vector2(x,y));
@@ -37,7 +37,7 @@ public class Ammus {
 		
 		FixtureDef ammusFix = new FixtureDef();
 		ammusFix.shape = laatikkoShape;
-		ammusFix.filter.groupIndex = -2; // Pitää olla eri muille pelaajille !!
+		ammusFix.filter.groupIndex = -2; // Pitï¿½ï¿½ olla eri muille pelaajille !!
 		
 		ammus.setGravityScale(0);				
 		ammus.createFixture(ammusFix);
@@ -63,7 +63,10 @@ public class Ammus {
 			float y = ammus.getPosition().y;
 			world.destroyBody(ammus);
 			rajahdys = new Rajahdys(x,y,world);
-			rDis = 10;
+			rDis = 50;
+		}
+		if (rDis == 40){
+			rajahdys.setCategoryBits();
 		}
 		if (rDis >= 0){
 			if (rDis == 0){

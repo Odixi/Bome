@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -41,6 +42,7 @@ public class Rajahdys {
 			fix.density = 20;
 			fix.friction = 0;
 			fix.restitution = 0.99f;
+			fix.filter.categoryBits = 0x0001;
 			fix.filter.groupIndex = -1;
 			
 			partikkelit[i].createFixture(fix);
@@ -53,6 +55,13 @@ public class Rajahdys {
 	public void dispose(){
 		for (int i = 0; i < partikkelit.length; i++){
 			world.destroyBody(partikkelit[i]);
+		}
+	}
+	public void setCategoryBits(){
+		Filter fil =partikkelit[0].getFixtureList().get(0).getFilterData();
+		for (int i = 0; i < partikkelit.length; i++){
+			fil.categoryBits = 0x0010;
+			partikkelit[i].getFixtureList().get(0).setFilterData(fil);
 		}
 	}
 
