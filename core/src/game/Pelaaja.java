@@ -4,7 +4,11 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Pelaaja implements InputProcessor{
 
@@ -16,10 +20,28 @@ public class Pelaaja implements InputProcessor{
 	boolean jump;
 	boolean up,left,right;
 	
-	public Pelaaja(World w, Body p) {
+	public Pelaaja(World w) {
 		super();
-		pelaaja = p;
 		world = w;
+		BodyDef pelaajaDef = new BodyDef();
+		pelaajaDef.type = BodyType.DynamicBody;
+		pelaajaDef.position.set(1280/12 + 2, 720/12 + 10);
+		
+		pelaaja = world.createBody(pelaajaDef);
+		
+		PolygonShape laatikkoShape = new PolygonShape();
+		laatikkoShape.setAsBox(2.0f, 2.0f);
+		
+		FixtureDef pelaajaFixture = new FixtureDef();
+		pelaajaFixture.shape = laatikkoShape;
+		pelaajaFixture.density = 0.4f;
+		pelaajaFixture.friction = 3.0f;
+		pelaajaFixture.restitution = 0.4f;
+		pelaajaFixture.filter.groupIndex = -2;
+		pelaajaFixture.filter.maskBits = 0x0FEF;
+				
+		pelaaja.createFixture(pelaajaFixture);
+		
 		hv = new Vector2(0, 400);
 		jump = true;
 		up = false;

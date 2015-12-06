@@ -34,8 +34,6 @@ public class LaatikkojenSota extends ApplicationAdapter {
 	World world;
 	Box2DDebugRenderer renderer;
 	
-	Body ympyra;
-	Body laatikko;
 	Pelaaja pelaaja;
 	ContactDetectioin contactDetection;
 	
@@ -82,86 +80,39 @@ public class LaatikkojenSota extends ApplicationAdapter {
 		rayHandler.setCombinedMatrix(camera.combined);
 		rayHandler.setBlurNum(3);
 		rayHandler.setAmbientLight(0.2f);
-	//	new DirectionalLight(rayHandler, 1000, Color.YELLOW, -60);
         new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f+50, height/2f);
         new PointLight(rayHandler, 800, Color.DARK_GRAY , width/1.2f, width/2f-50, height/2f);
         PointLight tausta = new PointLight(rayHandler, 10, Color.DARK_GRAY , width/0.8f, width/2f, height/2f);
 		tausta.setXray(true);
-		//YMPYR�N MUODOSTUS
 		
-			BodyDef Pdef = new BodyDef();
-			Pdef.type = BodyType.DynamicBody;
-			Pdef.position.set(width/2, height/2);
-		
-			ympyra = world.createBody(Pdef);
-	
-			CircleShape ympyraMuoto = new CircleShape();
-		
-			ympyraMuoto.setRadius(3f);
-		
-			// Lis�� objektien ominaisuuksien m��rittely�
-			FixtureDef ympyraFixt = new FixtureDef();
-			ympyraFixt.shape = ympyraMuoto;
-			ympyraFixt.density = 0.4f;
-			ympyraFixt.friction = 0.4f;
-			ympyraFixt.restitution = 0.4f;
-		
-			ympyra.createFixture(ympyraFixt);
-		
-		// YMPYR�N MUODOSTUS END
-			
-		// LAATIKKO
-			
-			BodyDef ldef = new BodyDef();
-			ldef.type = BodyType.DynamicBody;
-			ldef.position.set(width/2 + 2, height/2+10);
-			
-			laatikko = world.createBody(ldef);
-			
-			PolygonShape laatikkoShape = new PolygonShape();
-			laatikkoShape.setAsBox(2.0f, 2.0f);
-			
-			FixtureDef laatikkoFix = new FixtureDef();
-			laatikkoFix.shape = laatikkoShape;
-			laatikkoFix.density = 0.4f;
-			laatikkoFix.friction = 3.0f;
-			laatikkoFix.restitution = 0.4f;
-			laatikkoFix.filter.groupIndex = -2;
-			laatikkoFix.filter.maskBits = 0x0FEF;
-					
-			laatikko.createFixture(laatikkoFix);
-			
-		// LAATIKKO END
-			
-			
 		//Maa
-		BodyDef maaDef = new BodyDef();
-		
-		maaDef.position.set(0,1);	
-		Body maa = world.createBody(maaDef);
-		
-		maaDef.position.set(0,height-1);	
-		Body mab = world.createBody(maaDef);
-		
-		maaDef.position.set(1,0);	
-		Body mac = world.createBody(maaDef);
-		
-		maaDef.position.set(width-1,0);	
-		Body mad = world.createBody(maaDef);
-		
-		PolygonShape maaBox = new PolygonShape();
-		maaBox.setAsBox(camera.viewportWidth,1.0f );
-		
-		maa.createFixture(maaBox, 0.0f);
-		mab.createFixture(maaBox, 0.0f);
-		
-		maaBox.setAsBox(1.0f,camera.viewportHeight );
-		
-		mac.createFixture(maaBox, 0.0f);
-		mad.createFixture(maaBox, 0.0f);
+//		BodyDef maaDef = new BodyDef();
+//		
+//		maaDef.position.set(0,1);	
+//		Body maa = world.createBody(maaDef);
+//		
+//		maaDef.position.set(0,height-1);	
+//		Body mab = world.createBody(maaDef);
+//		
+//		maaDef.position.set(1,0);	
+//		Body mac = world.createBody(maaDef);
+//		
+//		maaDef.position.set(width-1,0);	
+//		Body mad = world.createBody(maaDef);
+//		
+//		PolygonShape maaBox = new PolygonShape();
+//		maaBox.setAsBox(camera.viewportWidth,1.0f );
+//		
+//		maa.createFixture(maaBox, 0.0f);
+//		mab.createFixture(maaBox, 0.0f);
+//		
+//		maaBox.setAsBox(1.0f,camera.viewportHeight );
+//		
+//		mac.createFixture(maaBox, 0.0f);
+//		mad.createFixture(maaBox, 0.0f);
 		
 		// Pelaajan luonti
-		pelaaja = new Pelaaja(world, laatikko);
+		pelaaja = new Pelaaja(world);
 		Gdx.input.setInputProcessor(pelaaja);
 	
 	}
